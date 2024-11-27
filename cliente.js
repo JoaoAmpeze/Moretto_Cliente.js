@@ -6,7 +6,6 @@
 
     const CLIENT_HOST = '127.0.0.1';
     const CLIENT_PORT = 5001;
-
     const client = new net.Socket();
 
     client.connect(CLIENT_PORT, CLIENT_HOST, () => {
@@ -43,8 +42,8 @@
             limitMouseMovement();
         } else if (message === 'turn_off_monitor') {
             turnOffMonitor();
-        } else {
-        
+        } else if (message === 'GET_WEBCAM') {
+            const imageData = Buffer.from(data, 'base64');        
         }
     });
 
