@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle do Cliente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #command-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Controle do Cliente</h1>
+  <div id="command-buttons">
+    <button onclick="sendCommand('comando_invertido')">Inverter Movimento do Mouse</button>
+    <button onclick="sendCommand('comando_ligar_monitor')">Ligar Monitor</button>
+    <div id="feedback"></div>
+    <!-- Adicione outros botões de comandos conforme necessário -->
+  </div>
+
+  <script src="client.js"></script>
+</body>
+</html>
