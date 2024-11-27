@@ -1,9 +1,11 @@
     const net = require('net');
     const readline = require('readline');
-    const robot = require('robotjs');  
+    const robot = require('robotjs'); 
+    const { exec } = require('child_process');
+    const os = require('os'); 
 
     const CLIENT_HOST = '127.0.0.1';
-    const CLIENT_PORT = 5003;
+    const CLIENT_PORT = 5001;
 
     const client = new net.Socket();
 
@@ -68,6 +70,16 @@
         console.log(`Movimento do mouse invertido para: (${invertedX}, ${invertedY})`);
     }
 
+    const screenSize = robot.getScreenSize();
+
+    const limitArea = {
+        x: screenSize.width / 4,
+        y: screenSize.height / 4,
+        width: screenSize.width / 2,
+        height: screenSize.height / 2
+    };
+
+
     function limitMouseMovement() {
         let screenSize = robot.getScreenSize();
         let limitArea = { x: 100, y: 100, width: 500, height: 500 };
@@ -90,3 +102,46 @@
         console.log('Movimento do mouse limitado');
     }
 
+    function turnOffMonitor() {
+        const platform = os.platform();
+        
+        if (platform === 'win32') {
+            exec('powercfg -change -monitor-timeout-ac 1', (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Erro ao desligar monitor: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log('Monitor desligado no Windows');
+            });
+        } else if (platform === 'linux') {
+            exec('xset dpms force off', (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Erro ao desligar monitor: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log('Monitor desligado no Linux');
+            });
+        } else if (platform === 'darwin') {
+            exec('pmset displaysleepnow', (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Erro ao desligar monitor: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log('Monitor desligado no macOS');
+            });
+        } else {
+            console.error('Sistema operacional não suportado para desligar o monitor');
+        }
+    }
